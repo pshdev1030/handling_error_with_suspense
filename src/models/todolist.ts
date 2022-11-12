@@ -5,7 +5,7 @@ interface TodoItemInterface {
   isImportant: boolean;
 }
 
-class TodoItem {
+class TodoItemModel {
   id: string;
   title: number;
   description: number;
@@ -18,5 +18,5 @@ class TodoItem {
   }
 }
 
-export { TodoItem };
+export { TodoItemModel };
 export type { TodoItemInterface };
