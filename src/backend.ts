@@ -1,6 +1,11 @@
 import { createServer, Response } from "miragejs";
 import uuid from "uuidjs";
 
+const wait = (delay: number) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
+
 const arr = [
   {
     id: uuid.generate(),
@@ -38,8 +43,10 @@ const db: { [key: string]: any } = { sunghyeon: arr };
 
 createServer({
   routes() {
-    this.post("/todos", (schema, req) => {
+    this.post("/todos", async (schema, req) => {
       const { userName } = JSON.parse(req.requestBody);
+
+      await wait(1000);
 
       if (!db[userName]) {
         return new Response(404, {}, { message: "Invalid Username" });
