@@ -4,33 +4,51 @@ import { TodoItemModel } from "./models";
 import api from "./services";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [todoList, setTodoList] = useState<TodoItemModel[]>([]);
-  const [error, setError] = useState<any>(null);
+  const [todoList, setTodoList] = useState<{
+    status: "idle" | "pending" | "fulfilled" | "rejected";
+    data: TodoItemModel[];
+    error: any;
+  }>({
+    status: "idle",
+    data: [],
+    error: null,
+  });
+
   useEffect(() => {
     async function getInitialData() {
       try {
-        setIsLoading(true);
-        setError(null);
+        setTodoList((cur) => ({
+          ...cur,
+          status: "pending",
+          error: null,
+        }));
         const data = await api.todo.getTodoList("sunghyeon");
-        setTodoList(data);
-        setIsLoading(false);
-      } catch (e) {
-        setError(e);
-        setIsLoading(false);
+        setTodoList((cur) => ({
+          ...cur,
+          status: "fulfilled",
+          data: data,
+        }));
+      } catch (e: any) {
+        setTodoList((cur) => ({
+          ...cur,
+          status: "rejected",
+          error: e.response.data,
+        }));
       }
     }
     getInitialData();
   }, []);
 
-  if (isLoading) {
+  const { status, data, error } = todoList;
+
+  if (status === "pending") {
     return <div>loading</div>;
   }
-  if (error) {
-    return <div>something wrong</div>;
+  if (status === "rejected") {
+    return <div>{error.message}</div>;
   }
 
-  return <TodoList todoList={todoList} />;
+  return <TodoList todoList={data} />;
 }
 
 export default App;
