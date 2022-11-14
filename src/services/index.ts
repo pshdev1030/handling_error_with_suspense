@@ -9,8 +9,8 @@ todoInstance.interceptors.response.use(
   (error) => Promise.reject(HTTPErrorGenerator(error))
 );
 
-const api = {
+const api = Object.freeze({
   todo: todo(todoInstance),
-};
+});
 
 export default api;
