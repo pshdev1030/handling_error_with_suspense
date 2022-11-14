@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 
-const STATUSCODE = { NOTFOUND: 404 } as const;
+const STATUSCODE = { NOTFOUND: 404, UNAUTHORIZED: 401 } as const;
 
 type axiosErrorType = {
   message: string;
@@ -37,10 +37,23 @@ class NotFoundError extends HTTPError {
   }
 }
 
+class UnauthorizedError extends HTTPError {
+  constructor(axiosError: AxiosError<any>) {
+    super(axiosError);
+    this.name = "UnauthorizedError";
+  }
+  handler() {
+    // 세션 날리기 등,,,
+    console.log("UnauthorizedError");
+  }
+}
+
 const HTTPErrorGenerator = (axiosError: AxiosError<axiosErrorType>) => {
   switch (axiosError.response?.status) {
     case STATUSCODE.NOTFOUND:
       return new NotFoundError(axiosError);
+    case STATUSCODE.UNAUTHORIZED:
+      return new UnauthorizedError(axiosError);
     default:
       return new HTTPError(axiosError);
   }
