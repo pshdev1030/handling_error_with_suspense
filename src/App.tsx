@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TodoList from "./components/TodoList";
 import { TodoItemModel } from "./models";
+import { NotFoundError } from "./models/error";
 import api from "./services";
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
         setTodoList((cur) => ({
           ...cur,
           status: "rejected",
-          error: e.response.data,
+          error: e,
         }));
       }
     }
@@ -44,7 +45,12 @@ function App() {
   if (status === "pending") {
     return <div>loading</div>;
   }
+
   if (status === "rejected") {
+    if (error instanceof NotFoundError) {
+      error.handler();
+      return <div>Not Found</div>;
+    }
     return <div>{error.message}</div>;
   }
 
