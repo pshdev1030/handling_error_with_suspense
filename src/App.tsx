@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TodoList from "./components/TodoList";
 import { TodoItemModel } from "./models";
-import { NotFoundError } from "./models/error";
+import { NotFoundError, UnauthorizedError } from "./models/error";
 import api from "./services";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
           status: "pending",
           error: null,
         }));
-        const data = await api.todo.getTodoList("sunghyeon");
+        const data = await api.todo.getTodoList("sunghyeon", "password");
         setTodoList((cur) => ({
           ...cur,
           status: "fulfilled",
@@ -49,9 +49,12 @@ function App() {
   if (status === "rejected") {
     if (error instanceof NotFoundError) {
       error.handler();
-      return <div>Not Found</div>;
+      return <div>Not Found {error.message}</div>;
     }
-    return <div>{error.message}</div>;
+    if (error instanceof UnauthorizedError) {
+      error.handler();
+      return <div>Unauthorized :{error.message}</div>;
+    }
   }
 
   return <TodoList todoList={data} />;

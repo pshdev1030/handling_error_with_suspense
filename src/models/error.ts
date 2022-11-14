@@ -58,4 +58,4 @@ const HTTPErrorGenerator = (axiosError: AxiosError<axiosErrorType>) => {
       return new HTTPError(axiosError);
   }
 };
-export { HTTPErrorGenerator, HTTPError, NotFoundError };
+export { HTTPErrorGenerator, HTTPError, NotFoundError, UnauthorizedError };
