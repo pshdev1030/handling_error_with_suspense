@@ -55,6 +55,7 @@ function App() {
       error.handler();
       return <div>Unauthorized :{error.message}</div>;
     }
+    return <div>error</div>;
   }
 
   return <TodoList todoList={data} />;
