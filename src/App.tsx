@@ -1,46 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import TodoList from "./components/TodoList";
+import useAsync from "./hooks/useAsync";
 import { TodoItemModel } from "./models";
 import { NotFoundError, UnauthorizedError } from "./models/error";
 import api from "./services";
 
 function App() {
-  const [todoList, setTodoList] = useState<{
-    status: "idle" | "pending" | "fulfilled" | "rejected";
-    data: TodoItemModel[];
-    error: any;
-  }>({
-    status: "idle",
-    data: [],
-    error: null,
-  });
+  const { status, data, error, execute } = useAsync<TodoItemModel[]>([]);
 
   useEffect(() => {
-    async function getInitialData() {
-      try {
-        setTodoList((cur) => ({
-          ...cur,
-          status: "pending",
-          error: null,
-        }));
-        const data = await api.todo.getTodoList("sunghyeon", "password");
-        setTodoList((cur) => ({
-          ...cur,
-          status: "fulfilled",
-          data: data,
-        }));
-      } catch (e: any) {
-        setTodoList((cur) => ({
-          ...cur,
-          status: "rejected",
-          error: e,
-        }));
-      }
-    }
-    getInitialData();
+    execute(api.todo.getTodoList("sunghyeon", "password"));
   }, []);
-
-  const { status, data, error } = todoList;
 
   if (status === "pending") {
     return <div>loading</div>;
@@ -57,7 +27,12 @@ function App() {
     }
   }
 
-  return <TodoList todoList={data} />;
+  return (
+    <>
+      <TodoList todoList={data} />
+    </>
+  );
 }
 
 export default App;
+//TODO: javascript 지원
