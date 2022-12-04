@@ -44,6 +44,12 @@ const userDB: { [key: string]: string } = { sunghyeon: "password" };
 
 createServer({
   routes() {
+    this.get("/username", async (schema, req) => {
+      await wait(1000);
+
+      return new Response(200, {}, { username: "sunghyeon" });
+    });
+
     this.post("/todos", async (schema, req) => {
       const { userName, passWord } = JSON.parse(req.requestBody);
 

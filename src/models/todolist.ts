@@ -1,3 +1,5 @@
+import { isConstructorDeclaration } from "typescript";
+
 interface TodoItemInterface {
   id: string;
   title: number;
@@ -18,5 +20,16 @@ class TodoItemModel {
   }
 }
 
-export { TodoItemModel };
-export type { TodoItemInterface };
+interface UserNameInterface {
+  username: string;
+}
+
+class UserNameModel {
+  userName: string;
+  constructor({ username }: UserNameInterface) {
+    this.userName = username;
+  }
+}
+
+export { TodoItemModel, UserNameModel };
+export type { TodoItemInterface, UserNameInterface };

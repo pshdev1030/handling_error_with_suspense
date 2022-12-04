@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import TodoList from "./components/TodoList";
 import useAsync from "./hooks/useAsync";
-import { TodoItemModel } from "./models";
+import { TodoItemModel, UserNameModel } from "./models";
 import { NotFoundError, UnauthorizedError } from "./models/error";
 import api from "./services";
 
 function App() {
-  const { status, data, error, execute } = useAsync<TodoItemModel[]>([]);
+  const { status, data, error, execute } = useAsync<UserNameModel | null>(null);
 
   useEffect(() => {
-    execute(api.todo.getTodoList("sunghyeon", "password"));
+    execute(api.todo.getUserName());
   }, []);
 
   if (status === "pending") {
@@ -28,11 +28,7 @@ function App() {
     return <div>error</div>;
   }
 
-  return (
-    <>
-      <TodoList todoList={data} />
-    </>
-  );
+  return <>{data?.userName}</>;
 }
 
 export default App;
