@@ -1,12 +1,40 @@
+import { useEffect } from "react";
+import useAsync from "../../hooks/useAsync";
 import { TodoItemModel } from "../../models";
+import { NotFoundError, UnauthorizedError } from "../../models/error";
+import api from "../../services";
 interface TodoListProps {
-  todoList: TodoItemModel[];
+  userName: string;
 }
 
-const TodoList = ({ todoList }: TodoListProps) => {
+const TodoList = ({ userName }: TodoListProps) => {
+  const { status, data, error, execute } = useAsync<TodoItemModel[] | null>(
+    null
+  );
+
+  useEffect(() => {
+    execute(api.todo.getTodoList(userName, "password"));
+  }, [userName]);
+
+  if (status === "pending") {
+    return <div>loading</div>;
+  }
+
+  if (status === "rejected") {
+    if (error instanceof NotFoundError) {
+      error.handler();
+      return <div>Not Found {error.message}</div>;
+    }
+    if (error instanceof UnauthorizedError) {
+      error.handler();
+      return <div>Unauthorized :{error.message}</div>;
+    }
+    return <div>error</div>;
+  }
+
   return (
     <ul>
-      {todoList.map((item) => (
+      {data?.map((item) => (
         <TodoItem todoItem={item} key={item.id} />
       ))}
     </ul>

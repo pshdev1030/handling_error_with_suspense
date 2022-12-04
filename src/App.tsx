@@ -6,7 +6,9 @@ import { NotFoundError, UnauthorizedError } from "./models/error";
 import api from "./services";
 
 function App() {
-  const { status, data, error, execute } = useAsync<UserNameModel | null>(null);
+  const { status, data, error, execute } = useAsync<UserNameModel>({
+    userName: "",
+  });
 
   useEffect(() => {
     execute(api.todo.getUserName());
@@ -28,7 +30,12 @@ function App() {
     return <div>error</div>;
   }
 
-  return <>{data?.userName}</>;
+  return (
+    <>
+      <>username: {data?.userName}</>
+      <TodoList userName={data.userName} />
+    </>
+  );
 }
 
 export default App;
