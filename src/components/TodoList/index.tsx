@@ -1,8 +1,16 @@
+<<<<<<< Updated upstream
+=======
+import { error } from "console";
+import { atom, useAtom } from "jotai";
+import { Suspense, useEffect } from "react";
+import useAsync from "../../hooks/useAsync";
+>>>>>>> Stashed changes
 import { TodoItemModel } from "../../models";
 interface TodoListProps {
   todoList: TodoItemModel[];
 }
 
+<<<<<<< Updated upstream
 const TodoList = ({ todoList }: TodoListProps) => {
   return (
     <ul>
@@ -10,6 +18,23 @@ const TodoList = ({ todoList }: TodoListProps) => {
         <TodoItem todoItem={item} key={item.id} />
       ))}
     </ul>
+=======
+const asyncTodoListAtom = atom(
+  async (get) => await api.todo.getTodoList("sunghyeon", "password")
+);
+
+const TodoList = ({ userName }: TodoListProps) => {
+  const [data] = useAtom(asyncTodoListAtom);
+
+  return (
+    <Suspense fallback={<div>loading</div>}>
+      <ul>
+        {data?.map((item) => (
+          <TodoItem todoItem={item} key={item.id} />
+        ))}
+      </ul>
+    </Suspense>
+>>>>>>> Stashed changes
   );
 };
 
