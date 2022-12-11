@@ -1,46 +1,22 @@
-# Getting Started with Create React App
+[[Track 1-2] 유인동 - ES6+ 비동기 프로그래밍과 실전 에러 핸들링](https://www.youtube.com/watch?v=o9JnT4sneAQ&t=26s)를 보고 정리해본 내용이다.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+표현식으로 정의해서 에러가 발생했을 때 에러를 터트릴 수 있도록 정의해라.
+그리고 비즈니스 로직의 파악을 위해 이 함수를 실제 가져다가 쓰는 개발자가 에러핸들링을 한다.
 
-## Available Scripts
+함수에 불필요한 에러핸들링을 추가하게 되면 함수를 그런 방식으로만 사용할 수 있게 된다.
+즉 표현식으로 정의함에 따라서 함수를 재사용 할 수 있게 되고 다른 비즈니스 로직에 따라 다른 에러처리를 할 수 있다.
 
-In the project directory, you can run:
+# 정리
 
-### `npm start`
+-Promise, async/await, try catch를 정확히 다루는 것이 중요하다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+-제너레이터/이터레이터/이터러블을 잘 응용하면 코드의 표현력을 더할 뿐 아니라 에러 핸들링도 더 잘할 수 있다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 순수 함수에서는 에러가 발생하도록 그냥 두는 것이 더 좋다.
 
-### `npm test`
+- 에러 핸들링 코드는 부수효과를 일으킬 코드 주변에 작성하는 것이 좋이 좋다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 불필요하게 에러 핸들링을 미리 해두는 것은 에러를 숨길 뿐이다.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 차라리 에러를 발생시키는 것이 더 낫다.
+  sentry.io같은 서비스를 이용하여 발생되는 모든 에러를 볼 수 있도록 하는 것이 고객과 회사를 위하는 더 좋은 해법이다.
